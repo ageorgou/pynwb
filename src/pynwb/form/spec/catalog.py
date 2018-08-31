@@ -96,7 +96,13 @@ class SpecCatalog(object):
                     ret.append(dset_ndt)
                     self.register_spec(dataset_spec, source_file)
             for group_spec in spec.groups:
-                ret.extend(self.auto_register(group_spec, source_file))
+                grp_ndt = group_spec.data_type_def
+                # We must register groups which do not define a neurodata type,
+                # to make sure that their contents can in turn be registered.
+                # However, if a group does define a type, we first check whether
+                # that group is inherited, to avoid overwriting the spec.
+                if grp_ndt is None or not spec.is_inherited_type(group_spec):
+                    ret.extend(self.auto_register(group_spec, source_file))
         return tuple(ret)
 
     @docval({'name': 'data_type', 'type': (str, type),
