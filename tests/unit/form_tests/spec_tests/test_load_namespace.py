@@ -36,10 +36,17 @@ class TestSpecLoad(unittest.TestCase):
                         linkable=True,
                         data_type_def='VoltageArray')
         ]
+        self.groups = [
+            GroupSpec('my first (empty) group',  # noqa: F405
+                       name='trivial_group',
+                       linkable=False,
+                       data_type_def='EmptyGroup')
+        ]
         self.spec = GroupSpec('A test group',  # noqa: F405
                               name='root_constructor_nwbtype',
                               datasets=self.datasets,
                               attributes=self.attributes,
+                              groups=self.groups,
                               linkable=False,
                               data_type_def='EphysData')
         dset1_attributes_ext = [
